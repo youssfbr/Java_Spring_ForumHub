@@ -1,23 +1,16 @@
 package com.github.youssfbr.forumhub.domains.topicos;
 
+import com.github.youssfbr.forumhub.api.dtos.DadosCadastroTopico;
 import com.github.youssfbr.forumhub.domains.respostas.Resposta;
 import com.github.youssfbr.forumhub.domains.topicos.enums.TopicoStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
+
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 @Table(name = "tb_topicos")
 public class Topico {
 
@@ -31,11 +24,8 @@ public class Topico {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String mensagem;
 
-    @CreatedDate
-    LocalDateTime dataCriacao;
-
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant createdAt;
+    private Instant dataCriacao;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20 , nullable = false)
@@ -47,9 +37,105 @@ public class Topico {
     @Column(length = 100)
     private String curso;
 
-
     @OneToMany(mappedBy = "topico" , fetch = FetchType.LAZY , cascade = CascadeType.MERGE)
     private List<Resposta> resposta;
 
+    public Topico() {}
 
+    public Topico(String titulo , String mensagem , String autor , String curso) {
+        this.titulo = titulo;
+        this.mensagem = mensagem;
+        this.autor = autor;
+        this.curso = curso;
+    }
+
+    public Topico(DadosCadastroTopico dados) {
+        titulo = dados.titulo();
+        mensagem = dados.mensagem();
+        autor = dados.nomeAutor();
+        curso = dados.nomeCurso();
+    }
+
+    @PrePersist
+    public void onPrePersist() {
+        status = TopicoStatus.NAO_RESPONDIDO;
+        dataCriacao = Instant.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    public Instant getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(Instant dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public TopicoStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TopicoStatus status) {
+        this.status = status;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public String getCurso() {
+        return curso;
+    }
+
+    public void setCurso(String curso) {
+        this.curso = curso;
+    }
+
+    public List<Resposta> getResposta() {
+        return resposta;
+    }
+
+    public void setResposta(List<Resposta> resposta) {
+        this.resposta = resposta;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Topico topico = (Topico) o;
+        return Objects.equals(id , topico.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

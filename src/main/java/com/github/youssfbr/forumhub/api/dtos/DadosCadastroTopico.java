@@ -4,6 +4,7 @@ public record DadosCadastroTopico(
 
         String titulo ,
         String mensagem ,
+        String nomeAutor ,
         String nomeCurso
 ) {
 }
