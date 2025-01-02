@@ -3,6 +3,7 @@ package com.github.youssfbr.forumhub.api.controllers;
 import com.github.youssfbr.forumhub.api.dtos.DadosCadastroTopico;
 import com.github.youssfbr.forumhub.api.dtos.DadosDetalhamentoTopicoDTO;
 import com.github.youssfbr.forumhub.domains.topicos.ITopicoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,13 +26,12 @@ public class TopicoController {
     }
 
     @PostMapping
-    public ResponseEntity<DadosDetalhamentoTopicoDTO> cadastrar(@RequestBody DadosCadastroTopico dados) {
+    public ResponseEntity<DadosDetalhamentoTopicoDTO> cadastrar(@Valid @RequestBody DadosCadastroTopico dados) {
         final DadosDetalhamentoTopicoDTO topicoCadastrado = topicoService.salvarTopico(dados);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}").buildAndExpand(topicoCadastrado.id()).toUri();
 
-        //return ResponseEntity.ok(dados);
         return ResponseEntity.created(uri).body(topicoCadastrado);
     }
 
