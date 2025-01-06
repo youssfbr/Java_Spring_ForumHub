@@ -1,4 +1,4 @@
-package com.github.youssfbr.forumhub.api.dtos;
+package com.github.youssfbr.forumhub.domains.topicos.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
