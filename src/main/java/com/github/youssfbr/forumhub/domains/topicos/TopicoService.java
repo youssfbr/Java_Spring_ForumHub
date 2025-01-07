@@ -54,6 +54,12 @@ public class TopicoService implements ITopicoService {
         return new DadosDetalhamentoTopicoDTO(topico);
     }
 
+    @Override
+    @Transactional
+    public void deletar(@NotNull @Positive Long id) {
+        topicoRepository.deleteById(id);
+    }
+
     private void checarSeTituloExiste(String titulo) {
         if (titulo != null && topicoRepository.existsByTitulo(titulo)) {
             throw new TituloException("Título já existe");

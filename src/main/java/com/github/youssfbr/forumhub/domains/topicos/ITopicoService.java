@@ -13,4 +13,5 @@ public interface ITopicoService {
     DadosDetalhamentoTopicoDTO detalhar(Long id);
     DadosDetalhamentoTopicoDTO salvarTopico(DadosCadastroTopico dados);
     DadosDetalhamentoTopicoDTO atualizar( Long id ,  DadosAtualizacaoTopico dados);
+    void deletar(Long id);
 }
