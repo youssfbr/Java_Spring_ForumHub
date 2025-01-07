@@ -1,6 +1,7 @@
 package com.github.youssfbr.forumhub.domains.topicos;
 
 import com.github.youssfbr.forumhub.domains.respostas.Resposta;
+import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosAtualizacaoTopico;
 import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosCadastroTopico;
 import com.github.youssfbr.forumhub.domains.topicos.enums.TopicoStatus;
 import jakarta.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Objects;
 public class Topico {
 
     @Id
+    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -55,6 +57,14 @@ public class Topico {
         mensagem = dados.mensagem();
         autor = dados.nomeAutor();
         curso = dados.nomeCurso();
+    }
+
+    public void atualizarInformacoes(DadosAtualizacaoTopico dados) {
+        if (dados.titulo() != null) titulo = dados.titulo();
+        if (dados.mensagem() != null) mensagem = dados.mensagem();
+        if (dados.status() != null) status = dados.status();
+        if (dados.nomeAutor() != null) autor = dados.nomeAutor();
+        if (dados.nomeCurso() != null) curso = dados.nomeCurso();
     }
 
     @PrePersist
@@ -127,7 +137,6 @@ public class Topico {
         this.resposta = resposta;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -140,4 +149,5 @@ public class Topico {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }

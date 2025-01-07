@@ -1,5 +1,6 @@
 package com.github.youssfbr.forumhub.api.controllers;
 
+import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosAtualizacaoTopico;
 import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosCadastroTopico;
 import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosDetalhamentoTopicoDTO;
 import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosListagemTopico;
@@ -45,6 +46,14 @@ public class TopicoController {
                 .fromCurrentRequest().path("/{id}").buildAndExpand(topicoCadastrado.id()).toUri();
 
         return ResponseEntity.created(uri).body(topicoCadastrado);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DadosDetalhamentoTopicoDTO> atualizar(
+            @PathVariable @NotNull @Positive Long id ,
+            @Valid @RequestBody DadosAtualizacaoTopico dados)
+    {
+        return ResponseEntity.ok(topicoService.atualizar(id , dados));
     }
 
 }

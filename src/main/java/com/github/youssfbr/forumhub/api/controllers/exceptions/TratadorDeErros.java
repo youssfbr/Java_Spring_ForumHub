@@ -2,12 +2,15 @@ package com.github.youssfbr.forumhub.api.controllers.exceptions;
 
 import com.github.youssfbr.forumhub.domains.topicos.exceptions.MensagemException;
 import com.github.youssfbr.forumhub.domains.topicos.exceptions.TituloException;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,12 @@ public class TratadorDeErros {
         return ResponseEntity.badRequest().body(errors.stream().map(DadosErroValidacao::new));
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<DadosErroValidacao>> tratarErro400(MethodArgumentNotValidException ex) {
         return ResponseEntity.badRequest()
@@ -46,6 +55,5 @@ public class TratadorDeErros {
             this(erro.getField() , erro.getDefaultMessage());
         }
     }
-
 
 }

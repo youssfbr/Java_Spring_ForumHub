@@ -1,5 +1,6 @@
 package com.github.youssfbr.forumhub.domains.topicos;
 
+import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosAtualizacaoTopico;
 import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosCadastroTopico;
 import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosDetalhamentoTopicoDTO;
 import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosListagemTopico;
@@ -43,6 +44,14 @@ public class TopicoService implements ITopicoService {
 
         final Topico topicoCriado = topicoRepository.save(new Topico(dados));
         return new DadosDetalhamentoTopicoDTO(topicoCriado);
+    }
+
+    @Override
+    @Transactional
+    public DadosDetalhamentoTopicoDTO atualizar(@NotNull @Positive Long id , @Valid DadosAtualizacaoTopico dados) {
+        final Topico topico = topicoRepository.getReferenceById(id);
+        topico.atualizarInformacoes(dados);
+        return new DadosDetalhamentoTopicoDTO(topico);
     }
 
     private void checarSeTituloExiste(String titulo) {

@@ -1,5 +1,6 @@
 package com.github.youssfbr.forumhub.domains.topicos;
 
+import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosAtualizacaoTopico;
 import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosCadastroTopico;
 import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosDetalhamentoTopicoDTO;
 import com.github.youssfbr.forumhub.domains.topicos.dtos.DadosListagemTopico;
@@ -11,5 +12,5 @@ public interface ITopicoService {
     Page<DadosListagemTopico> paginar(Pageable paginacao);
     DadosDetalhamentoTopicoDTO detalhar(Long id);
     DadosDetalhamentoTopicoDTO salvarTopico(DadosCadastroTopico dados);
-
+    DadosDetalhamentoTopicoDTO atualizar( Long id ,  DadosAtualizacaoTopico dados);
 }
